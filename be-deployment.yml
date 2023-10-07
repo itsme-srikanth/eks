@@ -1,0 +1,38 @@
+pipeline {
+     agent {
+        label "eks-slave"
+    }
+}
+  {
+  docker_container=container"eks-slave"
+  registary='ksksrikanth'
+  registary_container='ksksrikanth'
+  docker_image ''
+}
+ {
+    stage=("docker _build"){
+      steps {
+      sh 'docker build -t ksksrikanth/7am-lms-be' .
+      }
+       {
+       stage=("dockerbuild"){
+       steps {
+       sh 'cd api && docker build -t ksksrikanth/7am-lms-lms-be .
+       }
+    }
+     {
+     stage ("dockerpush"){
+        steps {
+        sh 'docker login-u ksksrikanth password srikanrh@630'
+        }
+       }
+      }
+      
+      {
+      sh(running postgres container)
+      docker rm --force postgres
+  kubectl apply-f postgtes-deployment.yml
+  kubectl apply-f postgres-cluster-ip-svc.yml
+  kubectl apply -f api-deployment.yml
+  kubectl apply-f api-svc.yml
+  
