@@ -1,1 +1,33 @@
-
+pipeline {
+     agent {
+        label "eks-slave"
+    }
+}
+  {
+  docker_container=container"eks-slave"
+  registary='ksksrikanth'
+  registary_container='ksksrikanth'
+  docker_image ''
+}
+ {
+    stage=("docker _build"){
+      steps {
+      sh 'docker build -t ksksrikanth/7am-lms-fe' .
+      }
+       {
+       stage=("dockerbuild"){
+       steps {
+       sh 'cd api && docker build -t ksksrikanth/7am-lms-lms-fe' .
+       }
+    }
+     {
+     stage ("dockerpush"){
+        steps {
+        sh 'docker login-u ksksrikanth password srikanth@630'
+        }
+       }
+      }
+      
+    
+  kubectl apply-f frontend-deployment.yml
+  kubectl apply-f frontend-svc.yml
