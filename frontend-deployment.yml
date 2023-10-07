@@ -19,3 +19,5 @@ spec:
         image: ksksrikanth/7am-lms-fe
         ports:
         - containerPort: 80
+        -name=VITE_API_URL
+        value=6666:8080/api
