@@ -5,14 +5,14 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockeruser')
         registry = "ksksrikanth"
-        registryCredential = 'ksksrikanth'
+        registryCredential = 'dockeruser'
         dockerImage = ''
     }
     stages {
         stage('running postgres container') {
             steps {
                 sh ' kubectl apply -f postgres-deployment.yml'
-                sh ' kubectl apply -f postgres-cluster-ip-service.yml'
+                sh ' kubectl apply -f postgres-cluster-ip-svc.yml'
             }
         }
       
