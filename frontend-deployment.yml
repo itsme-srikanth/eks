@@ -16,8 +16,9 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: ksksrikanth/7am-lms-fe
+        image: ksksrikanth/frontend-lms
         ports:
         - containerPort: 80
-        -name=VITE_API_URL
-        value=6666:8080/api
+        env:
+        -name: VITE_API_URL
+        value: "http://ac530acef547a4773835a103acfc8a4d-1603901027.ca-central-1.elb.amazonaws.com:8080/api"
