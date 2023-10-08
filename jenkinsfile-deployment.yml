@@ -1,38 +1,32 @@
 pipeline {
-     agent {
-        label "eks-slave"
+    agent {
+        label 'eks-slave-credentials'
     }
-}
-  {
-  docker_container=container"eks-slave"
-  registary='ksksrikanth'
-  registary_container='ksksrikanth'
-  docker_image ''
-}
- {
-    stage=("docker _build"){
-      steps {
-      sh 'docker build -t ksksrikanth/7am-lms-be' .
-      }
-       {
-       stage=("dockerbuild"){
-       steps {
-       sh 'cd api && docker build -t ksksrikanth/7am-lms-lms-be .
-       }
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockeruser')
+        registry = "ksksrikanth"
+        registryCredential = 'ksksrikanth'
+        dockerImage = ''
     }
-     {
-     stage ("dockerpush"){
-        steps {
-        sh 'docker login-u ksksrikanth password srikanrh@630'
+    stages {
+        stage('running postgres container') {
+            steps {
+                sh ' kubectl apply -f postgres-deployment.yml'
+                sh ' kubectl apply -f postgres-cluster-ip-service.yml'
+            }
         }
-       }
-      }
       
-      {
-      sh(running postgres container)
-      docker rm --force postgres
-  kubectl apply-f postgtes-deployment.yml
-  kubectl apply-f postgres-cluster-ip-svc.yml
-  kubectl apply -f api-deployment.yml
-  kubectl apply-f api-svc.yml
-  
+        stage('docker login') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+            }
+        }
+      
+        stage('running backend container') {
+            steps {
+                sh 'kubectl apply -f api-deployment.yml'
+                sh 'kubectl apply -f api-svc.yml'
+            }
+        }
+    }    
+}
