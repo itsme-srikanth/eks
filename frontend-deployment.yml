@@ -20,5 +20,5 @@ spec:
         ports:
         - containerPort: 80
         env:
-        -name: VITE_API_URL
-        value: "http://ac530acef547a4773835a103acfc8a4d-1603901027.ca-central-1.elb.amazonaws.com:8080/api"
+        - name: VITE_API_URL
+          value: "http://ac530acef547a4773835a103acfc8a4d-1603901027.ca-central-1.elb.amazonaws.com:8080/api"
